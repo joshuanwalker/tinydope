@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 
@@ -59,10 +60,13 @@ struct High
 char *area[10]; //Locations are stored here and accessed with *loocation in STATS structure
 int drug[6]; // Global int to hold how much of each drug selling for a each location.
 
+char str[25]; //Temp to store the user city and state.
 
 //FUNCTION PROTOTYPES
+
+int getnum();
+void getstring();
 int High_Low();
-int ngetch(void);
 void Cities();   //Prints cities that are currently in the game
 int JAIL();  //Draws the Jail.
 int NO_POC(); //Not enouph puckets message
@@ -89,7 +93,7 @@ int main()
 	int choice;
 	long a; //variable used for money: bank and debt.
 	
-	char str[25]; //Temp to store the user city and state.
+	
 	
 	//declaring and initializing c1[] elements 1-8
 	//element area[0] is used for the city the user is in.
@@ -110,7 +114,8 @@ int main()
 	//For random number generator
 	srand((int)time(NULL));
 	
-	//system("COLOR 6"); // changing the color of the screen.....
+
+
 	
 	//Below sets elements 1-9 of the *area[10] array to city's above. 
 	//array *area[0] is being reserved for the user to enter their
@@ -148,7 +153,7 @@ int main()
 	High_Low(); //Funtion to print out the High and low prices of the drugs....
 	Cities();
 	printf("\n\n\tEnter your City and State:> ");
-	gets(str);
+	getstring();
 	
 	area[0] = str; //stores str in area[0] --> which is the start city
 	stats.location = area[0]; //Start location = user city and state-->(area[0])
@@ -170,17 +175,17 @@ MB:
 	//If the 29th day
 	if(stats.days == 29)
 	{
-		//system("cls");
+		
 		printf("One more day left. Hope your debt is paid off!\n");
-		//system("PAUSE");
+		
 	}
 	
 	//If it's the last day
 	if(stats.days == 30)
 	{
-		//system("cls");
+		
 		printf("This is your last day.....\n");
-		//system("PAUSE");
+		
 	}
 	//THe loop below is used if you get busted going into the 30th day. I have to have this test
 	//here becuase the day increments twice if you go to jail and the day would be 31. There was
@@ -192,14 +197,14 @@ MB:
 		
 		if(stats.debt == 0 || stats.money - stats.debt >= 0)
 		{
-			//system("cls");
+			
 			
 		    a = (stats.money + stats.bank) - stats.debt; // temp int to add score to record.
 			y = a;
 		
 			//Add(&y); // passing total money to add funtion
 		
-			//system("cls");
+			
 			printf("\n\t\t");
 			for(i=0;i<=40;i++)
 				putchar(220);
@@ -213,7 +218,7 @@ MB:
 		//if debt != 0 or money - debt < 0
 		if(stats.debt != 0 && stats.money - stats.debt < 0)
 		{
-			//system("cls");
+			
 			printf("\t");
 			for(i=0;i<=55;i++)
 				putchar(220);
@@ -225,11 +230,11 @@ MB:
 				putchar(220);
 		}
 		printf("\n\nThanks for Playing\n\n");
-		//system("PAUSE");
+		
 		exit(0);
 	}
 		
-	//system("cls");
+	
 	printf("\n");
 	printf("Life: ");
 	//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);// Changing color of text
@@ -334,14 +339,15 @@ MB:
 	printf("\n\n\tEnter Choice ");
 	putchar(175);
 	printf(" ");
-	choice = ngetch();
+
+	choice = getnum();
 	
 	///If the user selects to buy drugs
-	if(choice == 49)//1)
+	if(choice == 1)
 	{
 B:		y = 0;// Clear back to 0
 		z = 0;
-		//system("cls");
+		
 		//Printing menu for the drugs that are for sale and their prices
 		printf("\t\t\t    ");
 		putchar(213);
@@ -410,28 +416,27 @@ B:		y = 0;// Clear back to 0
 		printf("\t\t\t  Money to spend:  $%d", stats.money);
 		printf("\n\nWhat do you want to buy?> ");
 					
-		z = ngetch(); //Used to test for characters instead if integers....
+		z = getnum();
 		
-		if(z == 49) // chocie 1
+		if(z == 1)
 		{ 
-			printf("1");
 			
 			//Testing to see if drug is available
 			if(drug[0] == 0)
 			{
 				printf("\n\nCoke is Dry!\n\n");
-				//system("PAUSE");
+				
 				goto B;
 			}
 
 			y = 0;
 			printf("\n\nHow many units of coke:> ");
-			scanf("%d", &y);
+			y = getnum();
 			
 			if(y > 900)
 			{
 				printf("INVLAID AMOUNT\n\n");
-				//system("pause");
+				
 				goto B;
 			}
 			//Testing to make sure you have enough money for the drugs.
@@ -451,7 +456,7 @@ B:		y = 0;// Clear back to 0
 					stats.coat -= y; //subtracting units user just inputed
 					stats.money += y * drug[0]; //Giving money back to user
 					stats.drugs[0] -= y; //subtracting units baught from coke total.
-					//system("PAUSE");
+					
 					goto B;
 				}	
 					
@@ -459,31 +464,30 @@ B:		y = 0;// Clear back to 0
 			else
 			{
 				printf("NOT ENOUGH MONEY!\n\n");
-				//system("PAUSE");
+				
 				goto B;
 			}		
 			
 		}
-		if(z == 50) // choice 2
+		if(z == 2)
 		{
-			printf("2");
 
 			//Testing to see if drug is available
 			if(drug[1] == 0)
 			{
 				printf("\n\nWeed is Dry!\n\n");
-				//system("PAUSE");
+				
 				goto B;
 			}
 
 			y = 0;
 			printf("\n\nHow many units of weed:> ");
-			scanf("%d", &y);
+			y = getnum();
 			
 			if(y > 900)
 			{
 				printf("INVLAID AMOUNT\n\n");
-				//system("pause");
+				
 				goto B;
 			}
 			
@@ -501,7 +505,7 @@ B:		y = 0;// Clear back to 0
 					stats.coat -= y;
 					stats.money += y * drug[1];
 					stats.drugs[1] -= y;
-					//system("PAUSE");
+					
 					goto B;
 				}			
 					
@@ -509,31 +513,30 @@ B:		y = 0;// Clear back to 0
 			else
 			{
 				printf("NOT ENOUGH MONEY!\n\n");
-				//system("PAUSE");
+				
 				goto B;
 			}			
 			
 		}
-		if(z == 51) // choice 3
+		if(z == 3)
 		{
-			printf("3");
 
 			//Testing to see if drug is available
 			if(drug[2] == 0)
 			{
 				printf("\n\nEcstacy is Dry!\n\n");
-				//system("PAUSE");
+				
 				goto B;
 			}
 
 			y = 0;
 			printf("\n\nHow many units of ecstacy:> ");			
-			scanf("%d", &y);
+			y = getnum();
 			
 			if(y > 900)
 			{
 				printf("INVLAID AMOUNT\n\n");
-				//system("pause");
+				
 				goto B;
 			}
 			if((y * drug[2]) < stats.money)
@@ -550,7 +553,7 @@ B:		y = 0;// Clear back to 0
 					stats.coat -= y;
 					stats.money += y * drug[2];
 					stats.drugs[2] -= y;
-					//system("PAUSE");
+					
 					goto B;
 				}				
 					
@@ -558,31 +561,30 @@ B:		y = 0;// Clear back to 0
 			else
 			{
 				printf("NOT ENOUGH MONEY!\n\n");
-				//system("PAUSE");
+				
 				goto B;
 			}		
 			
 		}
-		if(z == 52) // choice 4
+		if(z == 4)
 		{
-			printf("4");
 
 			//Testing to see if drug is available
 			if(drug[3] == 0)
 			{
 				printf("\n\nAcid is Dry!\n\n");
-				//system("PAUSE");
+				
 				goto B;
 			}
 
 			y = 0;
 			printf("\n\nHow many units of acid:> ");
-			scanf("%d", &y);
+			y = getnum();
 		
 			if(y > 900)
 			{
 				printf("INVLAID AMOUNT\n\n");
-				//system("pause");
+				
 				goto B;
 			}
 
@@ -600,7 +602,7 @@ B:		y = 0;// Clear back to 0
 					stats.coat -= y;
 					stats.money += y * drug[3];
 					stats.drugs[3] -= y;
-					//system("PAUSE");
+					
 					goto B;
 				}				
 					
@@ -608,31 +610,30 @@ B:		y = 0;// Clear back to 0
 			else
 			{
 				printf("NOT ENOUGH MONEY!\n\n");
-				//system("PAUSE");
+				
 				goto B;
 			}
 			
 		}
-		if(z == 53) // choice 5
+		if(z == 5)
 		{
-			printf("5");
 
 			//Testing to see if drug is available
 			if(drug[4] == 0)
 			{
 				printf("\n\nCrack is Dry!\n\n");
-				//system("PAUSE");
+				
 				goto B;
 			}
 
 			y = 0;
 			printf("\n\nHow many units of crack:> ");
-			scanf("%d", &y);
+			y = getnum();
 				
 			if(y > 900)
 			{
 				printf("INVLAID AMOUNT\n\n");
-				//system("pause");
+				
 				goto B;
 			}
 
@@ -650,7 +651,7 @@ B:		y = 0;// Clear back to 0
 					stats.coat -= y;
 					stats.money += y * drug[4];
 					stats.drugs[4] -= y;
-					//system("PAUSE");
+					
 					goto B;
 				}
 				
@@ -659,12 +660,12 @@ B:		y = 0;// Clear back to 0
 			else
 			{
 				printf("NOT ENOUGH MONEY!\n\n");
-				//system("PAUSE");
+				
 				goto B;
 			}
 						
 		}
-		if(z == 54) // choice 6
+		if(z == 6)
 		{
 			printf("6");
 
@@ -672,7 +673,7 @@ B:		y = 0;// Clear back to 0
 			if(drug[5] == 0)
 			{
 				printf("\n\nHeroin is Dry!\n\n");
-				//system("PAUSE");
+				
 				goto B;
 			}
 
@@ -680,12 +681,12 @@ B:		y = 0;// Clear back to 0
 			y=0;
 
 			printf("\n\nHow many units of heroin:> ");
-			scanf("%d", &y);
+			y = getnum();
 			
 			if(y > 900)
 			{
 				printf("INVLAID AMOUNT\n\n");
-				//system("pause");
+				
 				goto B;
 			}
 			
@@ -703,7 +704,7 @@ B:		y = 0;// Clear back to 0
 					stats.coat -= y;
 					stats.money += y * drug[5];
 					stats.drugs[5] -= y;
-					//system("PAUSE");
+					
 					goto B;
 				}
 				
@@ -712,38 +713,37 @@ B:		y = 0;// Clear back to 0
 			else
 			{
 				printf("NOT ENOUGH MONEY!\n\n");
-				//system("PAUSE");
+				
 				goto B;
 			}
 			
 			
 		}
-		if(z == 55) // choice 7
+		if(z == 7)
 			goto MB;
 
-		if(z < 49 || z > 55)
+		if(z < 1 || z > 7)
 		{
-			putchar(z); // showing charater user entered
 			printf("\n\nINVALID INPUT\n\n");
-			//system("PAUSE");
+			
 			goto B;
 		}		
 	
 		printf("\nDo you want to buy more drugs? (y or n):> ");
-		getchar();
-		if(getchar() == 'y' || getchar() == 'Y')
+		y =getchar();
+		if(y == 'y' || y == 'Y')
 			goto B;
 		else
 			goto MB;
 	
 	}
 	/// If user selects to sell drugs
-	if(choice == 50)//2)
+	if(choice == 2)
 	{
 S:
 		z = 0;
 		y = 0;
-		//system("cls");
+		
 
 		//Drawing sell menu with current prices and last payed prices
 		printf("\n\t      ");
@@ -869,17 +869,16 @@ S:
 		
 		printf("What do you want to sell?> ");
 		//scanf("%d", &choice);
-		z = ngetch();
+		z = getnum();
 
-		if(z == 49) // choice 1
+		if(z == 1)
 		{
-			printf("1");
 
 			//Testing to see if user has coke to sell
 			if(stats.drugs[0] == 0)
 			{
 				printf("\n\nYou don't have any coke to sell!\n\n");
-				//system("PAUSE");
+				
 				goto S;
 			}
 			
@@ -887,24 +886,24 @@ S:
 			if(drug[0] == 0)
 			{
 				printf("\n\nCoke is Dry!\n\n");
-				//system("PAUSE");
+				
 				goto S;
 			}
 
 			y = 0;
 			printf("\n\nHow many units of coke do you want to sell:> ");
-			scanf("%d", &y);
+			y = getnum();
 			if(y > 900)
 			{
 				printf("\n\nINVALID AMOUNT!\n\n");
-				//system("pause");
+				
 				goto S;
 			}
 			if(y > stats.drugs[0])
 			{
 				printf("\n\nYou don't have %d units of coke to sell.",y);
 				printf(" You only have %d units to sell.\n\n", stats.drugs[0]);
-				//system("PAUSE");
+				
 				goto S;
 			}
 			else
@@ -916,15 +915,14 @@ S:
 			if(stats.drugs[0] == 0)
 					old.d0 = 0;
 		}
-		if(z == 50) // choice 2
+		if(z == 2)
 		{
-			printf("2");
 
 			//Testing to see if drug is available
 			if(drug[1] == 0)
 			{
 				printf("\n\nWeed is Dry!\n\n");
-				//system("PAUSE");
+				
 				goto S;
 			}
 			
@@ -932,23 +930,23 @@ S:
 			if(stats.drugs[1] == 0)
 			{
 				printf("\n\nYou don't have any weed to sell!\n\n");
-				//system("PAUSE");
+				
 				goto S;
 			}
 			y = 0;
 			printf("\n\nHow many units of weed do you want to sell:> ");
-			scanf("%d", &y);
+			y = getnum();
 			if(y > 900)
 			{
 				printf("\n\nINVALID AMOUNT!\n\n");
-				//system("pause");
+				
 				goto S;
 			}
 			if(y > stats.drugs[1])
 			{
 				printf("\n\nYou don't have %d units of weed to sell.",y);
 				printf(" You only have %d units to sell.\n\n", stats.drugs[1]);
-				//system("PAUSE");
+				
 				goto S;
 			}
 			else
@@ -960,15 +958,15 @@ S:
 			if(stats.drugs[1] == 0)
 				old.d1 = 0;
 		}
-		if(z == 51) // choice 3
+		if(z == 3)
 		{
-			printf("3");
+
 
 			//Testing to see if drug is available
 			if(drug[2] == 0)
 			{
 				printf("\n\nEcstacy is Dry!\n\n");
-				//system("PAUSE");
+				
 				goto S;
 			}
 
@@ -976,23 +974,23 @@ S:
 			if(stats.drugs[2] == 0)
 			{
 				printf("\n\nYou don't have any exstacy to sell!\n\n");
-				//system("PAUSE");
+				
 				goto S;
 			}
 			y = 0;
 			printf("\n\nHow many units exstacy do you want to sell:> ");
-			scanf("%d", &y);
+			y = getnum();
 			if(y > 900)
 			{
 				printf("\n\nINVALID AMOUNT!\n\n");
-				//system("pause");
+				
 				goto S;
 			}
 			if(y > stats.drugs[2])
 			{
 				printf("\n\nYou don't have %d units of exstacy to sell.",y);
 				printf(" You only have %d units to sell.\n\n", stats.drugs[2]);
-				//system("PAUSE");
+				
 				goto S;
 			}
 			else
@@ -1004,38 +1002,37 @@ S:
 			if(stats.drugs[2] == 0)
 				old.d2 = 0;
 		}
-		if(z == 52) // choice 4
+		if(z == 4)
 		{
-			printf("4");
 
 			//Testing to see if drug is available
 			if(drug[3] == 0)
 			{
 				printf("\n\nAcid is Dry!\n\n");
-				//system("PAUSE");
+				
 				goto S;
 			}
 
 			if(stats.drugs[3] == 0)
 			{
 				printf("\n\nYou don't have any acid to sell!\n\n");
-				//system("PAUSE");
+				
 				goto S;
 			}
 			y = 0;
 			printf("\n\nHow many units of acid do you want to sell:> ");
-			scanf("%d", &y);
-			if(y > 900)
+			y = getnum();
+			if(y > 900 )
 			{
 				printf("\n\nINVALID AMOUNT!\n\n");
-				//system("pause");
+				
 				goto S;
 			}	
 			if(y > stats.drugs[3])
 			{
 				printf("\n\nYou don't have %d units of acid to sell.",y);
 				printf(" You only have %d units to sell.\n\n", stats.drugs[3]);
-				//system("PAUSE");
+				
 				goto S;
 			}
 			else
@@ -1047,38 +1044,38 @@ S:
 			if(stats.drugs[3] == 0)
 				old.d3 = 0;
 		}
-		if(z == 53) // choice 5
+		if(z == 5)
 		{
-			printf("5");
+
 
 			//Testing to see if drug is available
 			if(drug[4] == 0)
 			{
 				printf("\n\nCrack is Dry!\n\n");
-				//system("PAUSE");
+				
 				goto S;
 			}
 
 			if(stats.drugs[4] == 0)
 			{
 				printf("\n\nYou don't have any crack to sell!\n\n");
-				//system("PAUSE");
+				
 				goto S;
 			}
 			y = 0;
 			printf("\n\nHow many units of crack do you want to sell:> ");
-			scanf("%d", &y);
-			if(y > 900)
+			y = getnum();
+			if(y > 900 )
 			{
 				printf("\n\nINVALID AMOUNT!\n\n");
-				//system("pause");
+				
 				goto S;
 			}	
 			if(y > stats.drugs[4])
 			{
 				printf("\n\nYou don't have %d units of crack to sell.",y);
 				printf(" You only have %d units to sell.\n\n", stats.drugs[4]);
-				//system("PAUSE");
+				
 				goto S;
 			}
 			else
@@ -1090,38 +1087,37 @@ S:
 			if(stats.drugs[4] == 0)
 				old.d4 = 0;
 		}
-		if(z == 54) // choice 6
+		if(z == 6)
 		{
-			printf("6");
 
 			//Testing to see if drug is available
 			if(drug[5] == 0)
 			{
 				printf("\n\nHeroin is Dry!\n\n");
-				//system("PAUSE");
+				
 				goto S;
 			}
 
 			if(stats.drugs[5] == 0)
 			{
 				printf("\n\nYou don't have any heroin to sell!\n\n");
-				//system("PAUSE");
+				
 				goto S;
 			}
 			y = 0;
 			printf("\n\nHow many units of heroin do you want to sell:> ");
-			scanf("%d", &y);
-			if(y > 900)
+			y = getnum();
+			if(y > 900 )
 			{
 				printf("\n\nINVALID AMOUNT!\n\n");
-				//system("pause");
+				
 				goto S;
 			}
 			if(y > stats.drugs[5])
 			{
 				printf("\n\nYou don't have %d units of heroin to sell.",y);
 				printf(" You only have %d units to sell.\n\n", stats.drugs[5]);
-				//system("PAUSE");
+				
 				goto S;
 			}
 			else
@@ -1134,19 +1130,18 @@ S:
 				old.d5 = 0;
 			
 		}
-		if(z == 55) // choice 7
+		if(z == 7)
 			goto MB;
-		if(z < 49 || z > 55)
+		if(z < 1 || z > 7)
 		{
-			putchar(z); //showing character entered by user.
 			printf("\n\nINVALID CHOICE\n\n");
-			//system("PAUSE");
+			
 			goto S;
 		}
 		
 		printf("\nDo you want to sell anymore: (y/n)> ");
-		getchar();
-		if(getchar() == 'y' || getchar() == 'Y')
+		y = getchar();
+		if(y == 'y' || y == 'Y')
 			goto S;
 		else 
 			goto MB;
@@ -1154,14 +1149,14 @@ S:
 	}
 
 	///If the user selects to jet to a different city
-	if(choice == 51)//[3]
+	if(choice == 3)
 	{
 	    //Testing to see if money == 0 and bank > 0)
 		if(stats.days < 30)
 		{
 			if(stats.money == 0 && stats.bank != 0)
 			{
-				//system("cls");
+				
 				printf("\n\n\t");
 				putchar(218);
 				for(i=0;i<61;i++)
@@ -1192,13 +1187,13 @@ S:
 				printf("      ");
 				putchar(219);
 				printf("\n\n\n");
-				//system("PAUSE");
+				
 				goto MB;
 			}
 			//Testing to see if money == 0 and bank == 0)
 			if(stats.money == 0 && stats.bank == 0)
 			{
-				//system("cls");
+				
 				printf("\n\n\t");
 				putchar(218);
 				for(i=0;i<61;i++)
@@ -1234,7 +1229,7 @@ S:
 				printf("      ");
 				putchar(219);
 				printf("\n\n\n");
-				//system("PAUSE");
+				
 				goto MB;
 			}
 		}
@@ -1247,14 +1242,14 @@ S:
 			
 			if(stats.debt == 0 || stats.money - stats.debt >= 0)
 			{
-				//system("cls");
+				
 				
 				a = (stats.money + stats.bank) - stats.debt; // temp int to add score to record.
 				y = a;
 				
 				//Add(&y); // passing total money to add funtion
 				
-				//system("cls");
+				
 				printf("\n\t\t");
 				for(i=0;i<=40;i++)
 					putchar(220);
@@ -1269,7 +1264,7 @@ S:
 			//if debt != 0 or money - debt < 0
 			if(stats.debt != 0 && stats.money - stats.debt < 0)
 			{
-				//system("cls");
+				
 				printf("\t");
 				for(i=0;i<=55;i++)
 					putchar(220);
@@ -1281,12 +1276,12 @@ S:
 					putchar(220);
 			}
 			printf("\n\nThanks for Playing\n\n");
-			//system("PAUSE");
-			//system("cls");
+			
+			
 			y = 0;
 			//Asking if user wants to play again...
 			printf("\n\nWant to play again? (y/n):> ");
-			y = ngetch();
+			y = getchar();
 			if(y == 'y' || y == 'Y')//getch() == 'y' || getch() == 'Y')
 			{
 			//Setting all elements of the drug array to 0.....
@@ -1328,7 +1323,7 @@ S:
 		}
 J:		
 		y = 0;
-		//system("cls");
+		
 		printf("\nCurrent Location: %s\n\n", stats.location);
 		
 		//Drawing Jet menu
@@ -1406,8 +1401,7 @@ J:
 		putchar(190);
 		printf("\n");
 		printf("\nEnter destination:> ");
-		y = ngetch(); 
-		putchar(y);
+		y = getnum();
 				
 		drug[0] = rand()%10000;
 		drug[1] = rand()%1000;
@@ -1416,12 +1410,12 @@ J:
 		drug[4] = rand()%10000;
 		drug[5] = rand()%10000;
 
-		if(y == 49) //choice 1
+		if(y == 1)
 		{
 			if(stats.location == area[0])
 			{
 				printf("\n\nAlready in %s\n\n", stats.location);
-				//system("PAUSE");
+				
 				goto J;
 			}				
 			if(stats.location != area[0])
@@ -1452,12 +1446,12 @@ J:
 			}				
 		}
 
-		if(y == 50) // choice 2
+		if(y == 2)
 		{
 			if(stats.location == area[1])
 			{
 				printf("\n\nAlready in %s\n\n", stats.location);
-				//system("PAUSE");
+				
 				goto J;
 			}
 			if(stats.location != area[1])
@@ -1485,13 +1479,13 @@ J:
 			}
 			
 		}
-		if(y == 51) //choice 3
+		if(y == 3)
 		{
 			
 			if(stats.location == area[2])
 			{
 				printf("\n\nAlready in %s\n\n", stats.location);
-				//system("PAUSE");
+				
 				goto J;
 			}
 			if(stats.location != area[2])
@@ -1519,12 +1513,12 @@ J:
 			}
 			
 		}
-		if(y == 52) // choice 4
+		if(y == 4)
 		{
 			if(stats.location == area[3])
 			{
 				printf("\n\nAlready in %s\n\n", stats.location);
-				//system("PAUSE");
+				
 				goto J;
 			}
 			if(stats.location != area[3])
@@ -1552,12 +1546,12 @@ J:
 			}
 			
 		}
-		if(y == 53) // choice 5
+		if(y == 5)
 		{
 			if(stats.location == area[4])
 			{
 				printf("\n\nAlready in %s\n\n", stats.location);
-				//system("PAUSE");
+				
 				goto J;
 			}
 			if(stats.location != area[4])
@@ -1585,12 +1579,12 @@ J:
 			}
 			
 		}
-		if(y == 54) // choice 6
+		if(y == 6)
 		{
 			if(stats.location == area[5])
 			{
 				printf("\n\nAlready in %s\n\n", stats.location);
-				//system("PAUSE");
+				
 				goto J;
 			}
 			if(stats.location != area[5])
@@ -1618,12 +1612,12 @@ J:
 			}
 			
 		}
-		if(y == 55) // choice 7
+		if(y ==7 )
 		{
 			if(stats.location == area[6])
 			{
 				printf("\n\nAlready in %s\n\n", stats.location);
-				//system("PAUSE");
+				
 				goto J;
 			}
 			if(stats.location != area[6])
@@ -1651,12 +1645,12 @@ J:
 			}
 			
 		}
-		if(y == 56) //choice 8
+		if(y == 8)
 		{
 			if(stats.location == area[7])
 			{
 				printf("\n\nAlready in %s\n\n", stats.location);
-				//system("PAUSE");
+				
 				goto J;
 			}
 			if(stats.location != area[7])
@@ -1684,12 +1678,12 @@ J:
 			}
 			
 		}
-		if(y == 57) // choice 9
+		if(y == 9)
 		{
 			if(stats.location == area[8])
 			{
 				printf("\n\nAlready in %s\n\n", stats.location);
-				//system("PAUSE");
+				
 				goto J;
 			}
 			if(stats.location != area[8])
@@ -1716,74 +1710,71 @@ J:
 			}
 			
 		}		
-		if(y == 48) // choice 0
+		if(y ==0) 
 			goto MB;
 		
 		//Testing for invalid input
-		if(y < 48 || y > 58)
+		if(y <0 || y >9)
 		{
 			putchar(y);
 			printf("\n\nINVALID CHOICE\n\n\n\n");
-			//system("PAUSE");
+			
 			goto J;
 		}		
 	}
 
 	///If user selects to go to the bank
-	if(choice == 52)//4)
+	if(choice == 4)
 	{
 BK:		//Setting variable back to 0.
 		y = 0;
 		a = 0;
 		choice = 0;
 
-		//system("cls");
+		
 		Bank(stats.money, stats.bank);//Starting to draw the Bank Menu
 		printf("Choose one:> ");
-		choice = ngetch();
+		choice = getnum();
 		
 		//Start testing inout from user to see what they want to do
-		if(choice == 49)//1)
+		if(choice == 1)
 		{
-			putchar(choice);
 			printf("\n\nHow much do you want to deposit:> ");
-			scanf("%u", &a);
+			a=getnum();
 
 			//Testing input
 			if(a > stats.money)
 			{
 				printf("\n\nYou don't have $%d to deposit!\n\n", a);
-				//system("PAUSE");
+				
 				goto BK;
 			}				
 			stats.bank += a;
 			stats.money -= a;
 		}
-		if(choice == 50)//2)
+		if(choice == 2)
 		{
-			putchar(choice);
 			printf("\n\nHow much do you want to withdraw:> ");
-			scanf("%u", &a);
+			a = getnum();
 
 			//Testing input
 			if(a > stats.bank)
 			{
 				printf("\n\nYou don't have $%d to withdraw!\n\n", a);
-				//system("PAUSE");
+				
 				goto BK;
 			}
 			stats.bank -= a;
 			stats.money += a;
 		}
-		if(choice == 51)//3)
+		if(choice ==3 )
 			goto MB;
 
 		//Testing Bank menu choices
-		if(choice < 49 || choice > 51)
+		if(choice < 1 || choice >3)
 		{
-			putchar(choice);
 			printf("\n\nINVALID CHOICE\n\n\n\n\n\n");
-			//system("PAUSE");
+			
 			goto BK;
 		}
 		goto MB;
@@ -1791,97 +1782,102 @@ BK:		//Setting variable back to 0.
 
 	//If user selects to see the bookie*********************************************
 	//BOOKIE BROWN
-	if(choice == 53)//chocie == 5)
+	if(choice == 5)
 	{
 BB:
 		y = 0;
 		a = 0;
 		choice = 0;
-		//system("cls");
+		
 
 		Bookie();//Drawing Bookie menu.
 	
 		printf("\t\t\t  Current debt: $%d\n\n", stats.debt);
 		printf("\t\t\t  Money on you: $%d\n\n", stats.money);
 		printf("Choose one:> ");
-		choice = ngetch();
+		y = getnum();
 	
-		if(choice == 49)//choice == 1)
+		if(y ==1 )
 		{
-			putchar(choice);
 			if(stats.debt == 0)
 			{
 				printf("\nYou don't owe me any money!\n\n");
-				//system("PAUSE");
+				
 				goto BB;
 			}
 			printf("\n\nHow much do you want to pay me:> ");
-			scanf("%u", &a);
+			a = getnum();
 			
 			//Testing input
 			if(a > stats.debt)
 			{
 				printf("\n\nYou don't owe me: $%d\n\n", a);
-				//system("PAUSE");
+				
 				goto BB;
 			}
 			if(a > stats.money)
 			{
 				printf("\n\nYou don't have $%d on you.\n\n", a);
-				//system("PAUSE");
+				
 				goto BB;
 			}
 			stats.debt -= a;
 			stats.money -= a;
 		}
-		if(choice == 50)//choice == 2)
+		if(y == 2)
 		{
-			putchar(choice);
+
 			printf("\n\nHow much do you want to barrow:> ");
-			scanf("%u", &a);
+			a = getnum();
 			
 			//Testing input
 			if(a > 10000)
 			{
 				printf("\n\nMax you can barrow is: $10,000\n\n");
-				//system("PAUSE");
+				
 				goto BB;
 			}
 			stats.debt += a;
 			stats.money += a;
 		}
-		if(choice == 51)//chocie == 3)
+		if(y == 3)
 			goto MB;
 
-		if(choice < 49 || choice > 51)
+
+		if (choice == 0)
 		{
-			putchar(choice);
-			printf("\n\nINVALID CHOICE\n\n\n\n\n\n\n\n");
-			//system("PAUSE");
+			goto MB;
+		}
+
+		if(choice < 1 || choice > 3)
+		{
+			printf("\n\nINVALID CHOICE\n\n\n\n");
+			
 			goto BB;
 		}
+
 		goto MB;
 	}
 
-	if(choice == 54)//6
+	if(choice == 6)
 	{
 		printf("Not supported....\n");
 		goto MB;
 	}
 
 	//To exit the program
-	if(choice == 55)//7)
+	if(choice == 7)
 	{
-		//system("cls");
+		
 		printf("\n\n\t\t\t\tThanks for playing!\n\n");
 	}
 
 	//Testing user input
-	if(choice < 49 || choice > 55)
+	if(choice < 1 || choice > 7)
 	{
 		putchar(choice);
 		printf("\n\nINVALID INPUT\n");
-		//system("PAUSE");
+		
 		goto MB;
 	}
 	return 0;
@@ -1906,7 +1902,7 @@ int Rand_Event(char loc[], int *c, long *m, int d[], int *mc, int *l)
 	//after the user.
 	if(a <= 7 )
 	{
-		//system("cls");
+		
 		printf("\n\t\t ");
 		putchar(219);
 		putchar(196);
@@ -1945,8 +1941,8 @@ int Rand_Event(char loc[], int *c, long *m, int d[], int *mc, int *l)
 			putchar(196);
 		putchar(217);
 		printf("\n\n\n");
-		//system("PAUSE");
-		//system("cls");
+		
+		
 HA:		
 		choice = 0;
 		printf("\n\t\t\t\tLife: ");
@@ -1976,15 +1972,15 @@ HA:
 		putchar(219);
 		printf("\n\n");
 		printf("\t\t\tCHOICE:> ");
-		choice = ngetch();
+		choice = getnum();
 		
-		if(choice == 50)//choice == 2)//Trying to run from the cops
+		if(choice == 2)
 		{	
 			b = rand()%3 + 1;
 			
 			if(b == 1)
 			{
-				//system("cls");
+				
 				//Displaying message and drawing message box
 				printf("\n\t   ");
 				putchar(218);
@@ -2013,12 +2009,12 @@ HA:
 				printf("\n\t ");
 				putchar(219);
 				printf("\n\n\n");
-				//system("PAUSE");
+				
 				return(loc,c,m,d,mc,*l);
 			}
 			if(b == 2)
 			{
-				//system("cls");
+				
 				//Displaying message and drawing message box
 				printf("\n\t\t    ");
 				putchar(218);
@@ -2048,13 +2044,13 @@ HA:
 				putchar(219);
 				printf("\n\n\n\n\n");
 
-				//system("PAUSE");
-				//system("cls");
+				
+				
 				goto HA;
 			}
 			if(b == 3)
 			{
-				//system("cls");
+				
 				printf("\n      ");
 				putchar(218);
 				for(i=0;i<71;i++)
@@ -2090,18 +2086,18 @@ HA:
 				*m = 0;
 				for(i = 0; i < 6; i++)
 					d[i] = 0;
-				//system("PAUSE");
+				
 				return(loc,c,m,d,mc,*l);			
 			}
 			
 		}
-		if(choice == 49)//choice == 1)//Fighting the Cops
+		if(choice == 1)
 		{
 			a = rand()%5 + 1;
 			b = rand()%5 + 1;
 			
 			if(a == 1)
-			{	//system("cls");
+			{	
 			//Drawing message box and message
 				printf("\n\t\t");
 				putchar(218);
@@ -2134,12 +2130,12 @@ HA:
 				printf("\n\n\n");
 
 				
-				//system("PAUSE");
+				
 				return(loc,c,m,d,mc,*l);
 			}
 			if(b <= 3)
 			{
-				//system("cls");
+				
 
 				//Starting message box for shooting and missing
 				printf("\n\t\t     ");
@@ -2242,23 +2238,23 @@ HA:
 				putchar(217);
 				printf("\n\n\n");
 				*l -= 1; // Life points --> Looses 1 for getting shot
-				//system("PAUSE");
+				
 
 				//If life == 0 then game over..
 				if(*l == 0)
 				{
-					//system("cls");
+					
 					printf("\n\n\n\n\t\t\tOfficer HARDASS killed you\n\n");
 					printf("\t\t\t\tGAME OVER!\n\n");
 					exit(0);
 				}
-				//system("cls");
+				
 				goto HA;				
 			}
 			
 			if((a > 1 || b > 3))
 			{
-				//system("cls");
+				
 				
 				//Starting message box for shooting and missing
 				printf("\n\t\t     ");
@@ -2360,16 +2356,16 @@ HA:
 					putchar(196);
 				putchar(217);
 				printf("\n\n\n");
-				//system("PAUSE");
-				//system("cls");
+				
+				
 				goto HA;
 			}
 		}
-		if(choice != 49 && choice != 50)
+		else
 		{
 			printf("\n\nINVALID CHOICE!\n\n");
-			//system("PAUSE");
-			//system("cls");
+			
+			
 			goto HA;
 		}
 	}
@@ -2380,7 +2376,7 @@ HA:
 	//that drug..
 	if(a == 8 || a == 9)
 	{
-		//system("cls");
+		
 		
 		if(d[0] == 0)
 		{
@@ -2395,7 +2391,7 @@ HA:
 			}
 			else //There is enough room.
 			{	
-				//system("cls");
+				
 				printf("\n\t    ");
 				putchar(218);
 				printf("\n\t");
@@ -2439,7 +2435,7 @@ HA:
 				printf("\n\n");
 				d[0] += 6;
 			}
-			//system("PAUSE");
+			
 			return(loc,c,m,d,mc,*l); 
 		}
 
@@ -2453,7 +2449,7 @@ HA:
 			}
 			else
 			{	
-				//system("cls");
+				
 				printf("\n\t    ");
 				putchar(218);
 				printf("\n\t");
@@ -2497,7 +2493,7 @@ HA:
 				printf("\n\n");
 				d[1] += 15;
 			}
-			//system("PAUSE");
+			
 			return(loc,c,m,d,mc,*l);
 		}
 
@@ -2511,7 +2507,7 @@ HA:
 			}
 			else
 			{	
-				//system("cls");
+				
 				printf("\n\t    ");
 				putchar(218);
 				printf("\n\t");
@@ -2555,7 +2551,7 @@ HA:
 				printf("\n\n");
 				d[2] += 25;
 			}
-			//system("PAUSE");
+			
 			return(loc,c,m,d,mc,*l);
 		}
 
@@ -2569,7 +2565,7 @@ HA:
 			}
 			else
 			{	
-				//system("cls");
+				
 				printf("\n\t    ");
 				putchar(218);
 				printf("\n\t");
@@ -2613,7 +2609,7 @@ HA:
 				printf("\n\n");
 				d[3] += 7;
 			}
-			//system("PAUSE");
+			
 			return(loc,c,m,d,mc,*l);
 		}
 
@@ -2627,7 +2623,7 @@ HA:
 			}
 			else
 			{	
-				//system("cls");
+				
 			printf("\n\t    ");
 				putchar(218);
 				printf("\n\t");
@@ -2671,7 +2667,7 @@ HA:
 				printf("\n\n");
 				d[4] += 3;
 			}
-			//system("PAUSE");
+			
 			return(loc,c,m,d,mc,*l);
 		}
 
@@ -2685,7 +2681,7 @@ HA:
 			}
 			else
 			{	
-				//system("cls");
+				
 				printf("\n\t    ");
 				putchar(218);
 				printf("\n\t");
@@ -2729,7 +2725,7 @@ HA:
 				printf("\n\n");
 				d[5] += 5;
 			}
-			//system("PAUSE");
+			
 			return(loc,c,m,d,mc,*l);
 		}
 	
@@ -2740,7 +2736,7 @@ HA:
 	//that drug saying that you lost them.
 	if(a == 10 || a == 11)
 	{
-		//system("cls");
+		
 		
 		if(d[0] >= 5)
 		{
@@ -2788,7 +2784,7 @@ HA:
 		
 			d[0] -= 5;
 			*c -= 5;
-			//system("PAUSE");
+			
 			return(loc,c,m,d,mc,*l);
 		}
 		if(d[1] >= 10)
@@ -2836,7 +2832,7 @@ HA:
 			printf("\n\n");
 			d[1] -= 10;
 			*c -= 10;
-			//system("PAUSE");
+			
 			return(loc,c,m,d,mc,*l);
 		}
 		if(d[2] >= 10)
@@ -2884,7 +2880,7 @@ HA:
 			printf("\n\n");
 			d[2] -= 10;
 			*c -= 10;
-			//system("PAUSE");
+			
 			return(loc,c,m,d,mc,*l);
 		}
 		if(d[3] >= 10)
@@ -2932,7 +2928,7 @@ HA:
 			printf("\n\n");
 			d[3] -= 10;
 			*c -= 10;
-			//system("PAUSE");
+			
 			return(loc,c,m,d,mc,*l);
 		}
 		if(d[4] >= 5)
@@ -2980,7 +2976,7 @@ HA:
 			printf("\n\n");
 			d[4] -= 5;
 			*c -= 5;
-			//system("PAUSE");
+			
 			return(loc,c,m,d,mc,*l);
 		}
 		if(d[5] >= 5)
@@ -3028,7 +3024,7 @@ HA:
 			printf("\n\n");
 			d[5] -= 5;
 			*c -= 5;
-			//system("PAUSE");
+			
 			return(loc,c,m,d,mc,*l);
 		}
 	}
@@ -3039,7 +3035,7 @@ HA:
 	//much is in the wallet.
 	if(a == 12)
 	{
-		//system("cls");
+		
 		a = rand()%3 + 1;
 		printf("\n\tYou get the bright idea to robb someone........\n");
 		printf("\n\tSo, you find someone and follow them down an alley..........\n");
@@ -3059,23 +3055,23 @@ HA:
 			*m += 100;
 			printf("$100\n\n");
 		}
-		//system("PAUSE");
+		
 		return(loc,c,m,d,mc,*l);
 	}
 */
 	//If a == 13,14,15, 16, or 17 then you will be able to buy more pockets
 	if(a == 13 || a == 14 || a == 15 || a == 16 || a == 17)
 	{
-		//system("cls");
+		
 		printf("\t\t\nDo you want to purchase 100 more pockets for $1000.00? (y/n)> ");
-		y = ngetch();
+		y = getchar();
 		if(y == 'y' || y == 'Y')//getch() == 'y' || getch() == 'Y')
 		{
 			putchar(y);
 			if(*m < 1000)
 			{
 				printf("\n\nNOT ENOUGH MONEY!\n\n");
-				//system("PAUSE");
+				
 				return(loc,c,m,d,mc,*l);
 			}
 			*mc += 100;
@@ -3176,7 +3172,7 @@ void Cities()
 int JAIL()
 {	
 	int i,j;
-	//system("cls");
+	
 
 	//Top of jail cell
 	for(i=0;i<80;i++)
@@ -3489,7 +3485,7 @@ int JAIL()
 	//-----------------End drawing bottom
 	printf("\n\n");
 	printf("\tOfficer HARDASS has put you in jail for 24 hours! Sucks to be you!\n\n");
-	//system("PAUSE");
+	
 	return 0;
 }
 
@@ -3504,7 +3500,7 @@ int High_Low()
 		counter++;
 	   	a = rand()%15 + 1; //I don't want a=0 --> becuase it is black and the BG is Black
 		//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), a); //Random color
-		//system("cls");
+		
 		//Printing Dope Wars Logo
 		printf("\n\n\n");
 		printf("\t\t\t ");
@@ -3566,14 +3562,14 @@ int High_Low()
 		printf("                          ");
 		putchar(219);
 		printf("\n\n\n\n\n\n");
-	//	Sleep(1000);
-	}
-	//system("COLOR 06");
 
-//	//system("PAUSE");
+	}
+	
+
+//	
 	//Finished Draeing Dope Wars Logo
 	
-	//system("cls");
+	
 	
 	//A little info about the game
 	printf("Below shows you how high each drug can get....\n\n\t");
@@ -3604,8 +3600,8 @@ int High_Low()
 	//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);// Changing color of text
 	printf("WRITTEN BY: Michael Brown -- email: brown12321@hotmail.com\n\n\n");
 	//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);// Changing color of text
-	//system("PAUSE");
-	//system("cls");
+	
+	
 
 	return 0;	
 }
@@ -3698,7 +3694,7 @@ int Bank(long M, long B)
 	printf("\n");
 	printf("\t\t\t    ");
 	putchar(179);
-	printf("Account: $%d", B);
+	printf("Account: $%-13d", B);
 	putchar(179);
 	printf("\n");
 	printf("\t\t\t    ");
@@ -3760,7 +3756,38 @@ int Bookie()
 	return 0;
 }
 
-int ngetch(void)
+int getnum()
 {
-	return(getch());
+	char buf[16] = {'\0','\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', };
+	char* p;
+	long int i;
+
+
+	if (fgets(buf, sizeof(buf),stdin) != NULL)
+	{
+		i = strtol(buf, &p, 10);
+
+		if (buf[0] != '\n' && (*p == '\n' || *p == '\0'))
+		{
+			return i;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	return 0;
+}
+
+void getstring()
+{
+	
+		char* p;
+
+
+		if (fgets(str, sizeof(str),stdin) != NULL)
+		{
+				if ((p = strchr(str, '\n')) != NULL)
+				*p = '\0';
+		}
 }
