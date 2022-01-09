@@ -33,9 +33,9 @@ struct STATS
 {
 	int days;
 	int life;
-	double money;
-	double bank;
-	double debt;
+	long money;
+	long bank;
+	long debt;
 	int coat;
 	int max_coat;
 	int drugs[6];
@@ -69,17 +69,11 @@ int drug[6]; // Global int to hold how much of each drug selling for a each loca
 
 //FUNCTION PROTOTYPES
 int High_Low();
-void sort_by_HS(struct High record[], int n);
-void sort_HS(struct High record[], int n);
-void swap(struct High *record, int a, int b);
-void print_HS(struct High record[], int j);
-void Add(int *);
-void RecordHeader(void);
-void ViewHighScore();
+
 void Cities();   //Prints cities that are currently in the game
 int JAIL();  //Draws the Jail.
 int NO_POC(); //Not enouph puckets message
-int Bank(double M, double B); // Draws Bank Menu
+int Bank(long M, long B); // Draws Bank Menu
 int Bookie(); //Draws Bookie Brown's Menu
 //Rand_Event()
 //Below--> char loc[] is takes in the current location the user is at
@@ -88,7 +82,7 @@ int Bookie(); //Draws Bookie Brown's Menu
 		 //d[] is the drugs
          //*mc is for the max allowed pockets
 		 //*l is the life points
-int Rand_Event(char loc[], int *c, double *m, int d[], int *mc, int *l);
+int Rand_Event(char loc[], int *c, long *m, int d[], int *mc, int *l);
 
 
 
@@ -100,7 +94,7 @@ int main()
 	int y;// menu and drug units variable.
 	int j=0; //loop variable
 	int choice;
-	double a; //variable used for money: bank and debt.
+	long a; //variable used for money: bank and debt.
 	
 	char str[25]; //Temp to store the user city and state.
 	
@@ -152,11 +146,11 @@ int main()
 
 	stats.life = 10; // 10 life points.
 	stats.days = 1;  ///Day # 1 (start day)
-	stats.debt = 10000.00; //Initial Loan from Bookie
+	stats.debt = 10000; //Initial Loan from Bookie
 	stats.coat = 0;     //Sets your coat to 0 becuase you are not carrying anything yet.
 	stats.max_coat = 100; //Max you can carry
-	stats.money = 10000.00; //Loan money you start the game with
-	stats.bank = 0.00;  //Initial banking account total
+	stats.money = 10000; //Loan money you start the game with
+	stats.bank = 0;  //Initial banking account total
 
 	High_Low(); //Funtion to print out the High and low prices of the drugs....
 	Cities();
@@ -210,7 +204,7 @@ MB:
 		    a = (stats.money + stats.bank) - stats.debt; // temp int to add score to record.
 			y = a;
 		
-			Add(&y); // passing total money to add funtion
+			//Add(&y); // passing total money to add funtion
 		
 			//system("cls");
 			printf("\n\t\t");
@@ -219,7 +213,7 @@ MB:
 			printf("\n\n\t\tThis is how much money you ended up with!\n");
 			printf("\t\t");
 			printf("\n");
-			printf("\t\tMoney: $%.2lf\n\t\t", a);
+			printf("\t\tMoney: $%d\n\t\t", a);
 			for(i=0;i<=40;i++)
 			putchar(220);
 		}
@@ -232,7 +226,7 @@ MB:
 				putchar(220);
 			printf("\n\n\tBookie Brown and his boys fitted you for cement shoes!.\n");
 			printf("\tNow your swimming with the fish! :)~\n\n");
-			printf("\tDebt:  $%.2lf\n", stats.debt);
+			printf("\tDebt:  $%d\n", stats.debt);
 			printf("\t");
 			for(i=0;i<=55;i++)
 				putchar(220);
@@ -252,7 +246,7 @@ MB:
 		putchar(177);
 	printf("\n\n");
 	printf("Current Location: %s\n\n", stats.location); // Printing current location
-	printf("Money: $%.2lf\n\n", stats.money);  //Printing your money that you are carrying.	
+	printf("Money: $%d\n\n", stats.money);  //Printing your money that you are carrying.	
 	printf("\t\t\t\t Day %d of 30\n", stats.days);  // Prints which day your on.
 		
 	//drawing top of menu box
@@ -420,7 +414,7 @@ B:		y = 0;// Clear back to 0
 			putchar(205);
 		putchar(190);
 		printf("\n");
-		printf("\t\t\t  Money to spend:  $%.2lf", stats.money);
+		printf("\t\t\t  Money to spend:  $%d", stats.money);
 		printf("\n\nWhat do you want to buy?> ");
 					
 		z = getch(); //Used to test for characters instead if integers....
@@ -1188,7 +1182,7 @@ S:
 				printf("\n");
 				printf("\t");
 				putchar(179);
-				printf("It looks like you have money in the bank: $%-10.2lf        ", stats.bank);
+				printf("It looks like you have money in the bank: $%d        ", stats.bank);
 				putchar(179);
 				printf("\n");
 				printf("      ");
@@ -1265,7 +1259,7 @@ S:
 				a = (stats.money + stats.bank) - stats.debt; // temp int to add score to record.
 				y = a;
 				
-				Add(&y); // passing total money to add funtion
+				//Add(&y); // passing total money to add funtion
 				
 				//system("cls");
 				printf("\n\t\t");
@@ -1274,7 +1268,7 @@ S:
 				printf("\n\n\t\tThis is how much money you ended up with!\n");
 				printf("\t\t");
 				printf("\n");
-				printf("\t\tMoney: $%.2lf\n\t\t", a);
+				printf("\t\tMoney: $%d\n\t\t", a);
 				for(i=0;i<=40;i++)
 					putchar(220);
 			}
@@ -1288,7 +1282,7 @@ S:
 					putchar(220);
 				printf("\n\n\tBookie Brown and his boys fitted you for cement shoes!.\n");
 				printf("\tNow your swimming with the fish! :)~\n\n");
-				printf("\tDebt:  $%.2lf\n", stats.debt);
+				printf("\tDebt:  $%d\n", stats.debt);
 				printf("\t");
 				for(i=0;i<=55;i++)
 					putchar(220);
@@ -1440,8 +1434,8 @@ J:
 			if(stats.location != area[0])
 			{
 				stats.location = area[0];
-				stats.debt += (stats.debt * .40); // intrest per day debt isn't paid
-				stats.bank += (stats.bank * .15); //interest per day for bank account.
+				stats.debt += ((stats.debt/100) * 40); // intrest per day debt isn't paid
+				stats.bank += ((stats.bank/100) * 15); //interest per day for bank account.
 				Rand_Event(stats.location, &stats.coat, &stats.money, stats.drugs, &stats.max_coat,&stats.life);
 				
 				//This if state test to see if the coat and money came back as 0.
@@ -1457,8 +1451,8 @@ J:
 					old.d5 = 0;
 					JAIL();    //Jail Cell Screen
 					stats.days++; //incrementing day for the time spent in jail
-					stats.bank += (stats.bank * .15); // Adding % for banking account
-					stats.debt += (stats.debt * .40); // adding interest to debt
+					stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+					stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				}
 				stats.days++; //Incrementing day after day spent in jail
 				goto MB;
@@ -1477,8 +1471,8 @@ J:
 			{
 				stats.location = area[1];
 				
-				stats.debt += (stats.debt * .40); // intrest per day debt isn't paid
-				stats.bank += (stats.bank * .15); // interet per day for banking account
+				stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+				stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				Rand_Event(stats.location, &stats.coat, &stats.money, stats.drugs, &stats.max_coat,&stats.life);
 				if(stats.money == 0 && stats.coat == 0)
 				{
@@ -1490,8 +1484,8 @@ J:
 					old.d5 = 0;
 					JAIL();
 					stats.days++;
-					stats.bank += (stats.bank * .15);
-					stats.debt += (stats.debt * .40);
+					stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+					stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				}
 				stats.days++;
 				goto MB;
@@ -1511,8 +1505,8 @@ J:
 			{
 				stats.location = area[2];
 				
-				stats.debt += (stats.debt * .40); // intrest per day debt isn't paid
-				stats.bank += (stats.bank * .15); // interet per day for banking account
+				stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+				stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				Rand_Event(stats.location, &stats.coat, &stats.money, stats.drugs, &stats.max_coat,&stats.life);
 				if(stats.money == 0 && stats.coat == 0)
 				{
@@ -1524,8 +1518,8 @@ J:
 					old.d5 = 0;
 					JAIL();
 					stats.days++;
-					stats.bank += (stats.bank * .15);
-					stats.debt += (stats.debt * .40);
+					stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+					stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				}
 				stats.days++;
 				goto MB;
@@ -1544,8 +1538,8 @@ J:
 			{
 				stats.location = area[3];
 				
-				stats.debt += (stats.debt * .40); // intrest per day debt isn't paid
-				stats.bank += (stats.bank * .15); // interet per day for banking account
+				stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+				stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				Rand_Event(stats.location, &stats.coat, &stats.money, stats.drugs, &stats.max_coat,&stats.life);
 				if(stats.money == 0 && stats.coat == 0)
 				{
@@ -1557,8 +1551,8 @@ J:
 					old.d5 = 0;
 					JAIL();
 					stats.days++;
-					stats.bank += (stats.bank * .15);
-					stats.debt += (stats.debt * .40);
+					stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+					stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				}
 				stats.days++;
 				goto MB;
@@ -1577,8 +1571,8 @@ J:
 			{
 				stats.location = area[4];
 				
-				stats.debt += (stats.debt * .40); // intrest per day debt isn't paid
-				stats.bank += (stats.bank * .15); // interet per day for banking account
+				stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+				stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				Rand_Event(stats.location, &stats.coat, &stats.money, stats.drugs, &stats.max_coat,&stats.life);
 				if(stats.money == 0 && stats.coat == 0)
 				{
@@ -1590,8 +1584,8 @@ J:
 					old.d5 = 0;
 					JAIL();
 					stats.days++;
-					stats.bank += (stats.bank * .15);
-					stats.debt += (stats.debt * .40);
+					stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+					stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				}
 				stats.days++;
 				goto MB;
@@ -1610,8 +1604,8 @@ J:
 			{
 				stats.location = area[5];
 				
-				stats.debt += (stats.debt * .40); // intrest per day debt isn't paid
-				stats.bank += (stats.bank * .15); // interet per day for banking account
+				stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+				stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				Rand_Event(stats.location, &stats.coat, &stats.money, stats.drugs, &stats.max_coat,&stats.life);
 				if(stats.money == 0 && stats.coat == 0)
 				{
@@ -1623,8 +1617,8 @@ J:
 					old.d5 = 0;
 					JAIL();
 					stats.days++;
-					stats.bank += (stats.bank * .15);
-					stats.debt += (stats.debt * .40);
+					stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+					stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				}
 				stats.days++;
 				goto MB;
@@ -1643,8 +1637,8 @@ J:
 			{
 				stats.location = area[6];
 				
-				stats.debt += (stats.debt * .40); // intrest per day debt isn't paid
-				stats.bank += (stats.bank * .15); // interet per day for banking account
+				stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+				stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				Rand_Event(stats.location, &stats.coat, &stats.money, stats.drugs, &stats.max_coat,&stats.life);
 				if(stats.money == 0 && stats.coat == 0)
 				{
@@ -1656,8 +1650,8 @@ J:
 					old.d5 = 0;
 					JAIL();
 					stats.days++;
-					stats.bank += (stats.bank * .15);
-					stats.debt += (stats.debt * .40);
+					stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+					stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				}
 				stats.days++;
 				goto MB;
@@ -1676,8 +1670,8 @@ J:
 			{
 				stats.location = area[7];
 				
-				stats.debt += (stats.debt * .40); // intrest per day debt isn't paid
-				stats.bank += (stats.bank * .15); // interet per day for banking account
+				stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+				stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				Rand_Event(stats.location, &stats.coat, &stats.money, stats.drugs, &stats.max_coat,&stats.life);
 				if(stats.money == 0 && stats.coat == 0)
 				{
@@ -1689,8 +1683,8 @@ J:
 					old.d5 = 0;
 					JAIL();
 					stats.days++;
-					stats.bank += (stats.bank * .15);
-					stats.debt += (stats.debt * .40);
+					stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+					stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				}
 				stats.days++;
 				goto MB;
@@ -1708,8 +1702,8 @@ J:
 			if(stats.location != area[8])
 			{
 				stats.location = area[8];
-				stats.debt += (stats.debt * .40); // intrest per day debt isn't paid
-				stats.bank += (stats.bank * .15); // interet per day for banking account
+				stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+				stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				Rand_Event(stats.location, &stats.coat, &stats.money, stats.drugs, &stats.max_coat,&stats.life);
 				if(stats.money == 0 && stats.coat == 0)
 				{
@@ -1721,8 +1715,8 @@ J:
 					old.d5 = 0;
 					JAIL();
 					stats.days++;
-					stats.bank += (stats.bank * .15);
-					stats.debt += (stats.debt * .40);
+					stats.debt += ((stats.debt / 100) * 40); // intrest per day debt isn't paid
+					stats.bank += ((stats.bank / 100) * 15); //interest per day for bank account.
 				}
 				stats.days++;
 				goto MB;
@@ -1760,12 +1754,12 @@ BK:		//Setting variable back to 0.
 		{
 			putchar(choice);
 			printf("\n\nHow much do you want to deposit:> ");
-			scanf("%lf", &a);
+			scanf("%u", &a);
 
 			//Testing input
 			if(a > stats.money)
 			{
-				printf("\n\nYou don't have $%.2lf to deposit!\n\n", a);
+				printf("\n\nYou don't have $%d to deposit!\n\n", a);
 				//system("PAUSE");
 				goto BK;
 			}				
@@ -1776,12 +1770,12 @@ BK:		//Setting variable back to 0.
 		{
 			putchar(choice);
 			printf("\n\nHow much do you want to withdraw:> ");
-			scanf("%lf", &a);
+			scanf("%u", &a);
 
 			//Testing input
 			if(a > stats.bank)
 			{
-				printf("\n\nYou don't have $%.2lf to withdraw!\n\n", a);
+				printf("\n\nYou don't have $%d to withdraw!\n\n", a);
 				//system("PAUSE");
 				goto BK;
 			}
@@ -1808,14 +1802,14 @@ BK:		//Setting variable back to 0.
 	{
 BB:
 		y = 0;
-		a = 0.00;
+		a = 0;
 		choice = 0;
 		//system("cls");
 
 		Bookie();//Drawing Bookie menu.
 	
-		printf("\t\t\t  Current debt: $%.2lf\n\n", stats.debt);
-		printf("\t\t\t  Money on you: $%.2lf\n\n", stats.money);
+		printf("\t\t\t  Current debt: $%d\n\n", stats.debt);
+		printf("\t\t\t  Money on you: $%d\n\n", stats.money);
 		printf("Choose one:> ");
 		choice = getch();
 	
@@ -1829,18 +1823,18 @@ BB:
 				goto BB;
 			}
 			printf("\n\nHow much do you want to pay me:> ");
-			scanf("%lf", &a);
+			scanf("%u", &a);
 			
 			//Testing input
 			if(a > stats.debt)
 			{
-				printf("\n\nYou don't owe me: $%.2lf\n\n", a);
+				printf("\n\nYou don't owe me: $%d\n\n", a);
 				//system("PAUSE");
 				goto BB;
 			}
 			if(a > stats.money)
 			{
-				printf("\n\nYou don't have $%.2lf on you.\n\n", a);
+				printf("\n\nYou don't have $%d on you.\n\n", a);
 				//system("PAUSE");
 				goto BB;
 			}
@@ -1851,7 +1845,7 @@ BB:
 		{
 			putchar(choice);
 			printf("\n\nHow much do you want to barrow:> ");
-			scanf("%lf", &a);
+			scanf("%u", &a);
 			
 			//Testing input
 			if(a > 10000)
@@ -1878,7 +1872,7 @@ BB:
 
 	if(choice == 54)//6
 	{
-		ViewHighScore(); // Getting records and sorting...
+		printf("Not supported....\n");
 		goto MB;
 	}
 
@@ -1908,7 +1902,7 @@ BB:
 
 //Everything in this Rand_Event() function relys on RNG,"Random Number Generators". I used
 //Random number to determine when certain events happen through-out the game
-int Rand_Event(char loc[], int *c, double *m, int d[], int *mc, int *l)
+int Rand_Event(char loc[], int *c, long *m, int d[], int *mc, int *l)
 {
 	int a, b, i, choice;
 	char y= 0;
@@ -3104,139 +3098,9 @@ HA:
 	return(loc,c,m,d,mc,*l);
 }
 
-//Sorts records by the high score. This funtion uses the sort_HS() funtion to help
-// sort the records by high score.
-void sort_by_HS(struct High record[], int n)
-{
-    int x, y;
-	int line = 0;
-	int counter =0;
-
-	//Sort records by money total
-	sort_HS(record, n);
-
-	//system("cls");
-	
-	RecordHeader(); // Header for dat file
-
-	for(x=1;x<=10;x++)
-	{
-		for(y=0;y<10;y++)
-		{	
-			if(x == 10)
-				printf("\t\t\t%d: ", x++);
-			else
-				printf("\t\t\t %d: ", x++);			
-
-			counter++;
-			if(counter <= 10)
-				print_HS(record, y);			
-		}
-	}
-	//system("PAUSE");
-}
-
-//This will sort the high scores in the game
-void sort_HS(struct High record[], int n)
- {
-	int j, k;
-	
-	//Sort all records by high score
-	for(j=0;j<n;j++)
-	{
-		for(k=n-1;k>j;k--)
-		{
-			if(record[k - 1].HS < record[k].HS)
-				swap(record, k-1, k);
-		}
-	}
-}
-
-//Swaping function (if record[a] < record[b], then they will get swapped)...
-void swap(struct High *record, int a, int b)
-{
-	struct High temp;
-	temp = record[a];
-	record[a] = record[b];
-	record[b] = temp;
-}
-
-//Printing record header for dat file
-void RecordHeader()
-{	
-	int i;
-	printf("\t\t\t        HIGH SCORE TABLE\n");
-	printf("\t\t     ");
-	for(i=0;i<40;i++)
-		putchar(220);
-	printf("\n\n");	
-}
-
-//Displaying results after sorted.
-void print_HS(struct High record[], int j)
-{	
-	printf("%-13s\t$%-25d\n\n\n",  record[j].Name, record[j].HS);
-}
 
 
-//THis funtion takes in a struct record of the struct High. Add it to the 
-//High score table. Returns nothing.
-void Add(int *A)
-{
-	FILE *open;
-	struct High record;
-	
-	
-	//Getting input from User.
-		record.HS = *A;
-		printf("Enter Name: ");
-		fflush(stdin);
-		gets(record.Name);
-				
-		//making file_ptr = to the file.
-		open = fopen("HighScore.dat", "ab+");
-		
-		//Checking to see if file exist.
-		if(open == NULL)
-		{
-			printf("ERROR in openings requested file....Program END!");
-			printf("\n");
-			exit(1);
-		}
-		
-		//Writing record to file
-		fwrite(&record, sizeof(struct High ),1, open);
-		fclose(open);
-	
-	return;
-}
 
-//**************** This Funtion prints current high score list ****************
-void ViewHighScore()
-{
-	FILE *open;
-	struct High record[SIZE];
-	int j = 0;
-
-	open = fopen("HighScore.dat", "rb+");
- 
-	//Checking to see if there is even a file
-	if (open == NULL) 
-	{
-		//system("cls");
-		printf("Error Opening High Score list..........\n");
-		printf("Create one by starting a new game.\n\n\n");
-		//system("PAUSE");
-		return;
-	}
-	while(!feof(open))
-	{
-		fread(&record[j], sizeof(struct High), 1, open);
-		j++;		
-	}
-	sort_by_HS(record, j-1);
-	fclose(open);	
-}
 
 //Used to display what cities are already in the game. This is displayed when
 //the user is ask to input their city and state.
@@ -3797,7 +3661,7 @@ int NO_POC()
 	return 0;
 }
 //********************* THis function draws the Bank menu ***********************
-int Bank(double M, double B)
+int Bank(long M, long B)
 {
 	int i;
 
@@ -3841,7 +3705,7 @@ int Bank(double M, double B)
 	printf("\n");
 	printf("\t\t\t    ");
 	putchar(179);
-	printf("Account: $%-13.2lf", B);
+	printf("Account: $%d", B);
 	putchar(179);
 	printf("\n");
 	printf("\t\t\t    ");
@@ -3850,7 +3714,7 @@ int Bank(double M, double B)
 		putchar(205);
 	putchar(190);
 	printf("\n\t\t         ");
-	printf("Money able to deposit:  $%.2lf\n\n", M);
+	printf("Money able to deposit:  $%d\n\n", M);
 
 	return 0;
 }
