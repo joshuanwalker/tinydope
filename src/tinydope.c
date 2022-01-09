@@ -15,18 +15,11 @@
 
 #include <stdint.h>
 #include <stdio.h>
-//#include <windows.h>
 #include <time.h>
 #include <stdlib.h>
 
-#define SIZE 100 // Used for records for high score
 
-#define NUM_INT_BITS 24
-#define NUM_FRAC_BITS 8
-#define MASK_INT_BITS  0xFFFFFF00
-#define MASK_FRAC_BITS 0x000000FF
 
-typedef uint32_t SunFp;
 
 //Main structure to hold most of the games information
 struct STATS
@@ -69,7 +62,7 @@ int drug[6]; // Global int to hold how much of each drug selling for a each loca
 
 //FUNCTION PROTOTYPES
 int High_Low();
-
+int ngetch(void);
 void Cities();   //Prints cities that are currently in the game
 int JAIL();  //Draws the Jail.
 int NO_POC(); //Not enouph puckets message
@@ -115,7 +108,7 @@ int main()
 	struct LAST old;
 	
 	//For random number generator
-	srand(time(NULL));
+	srand((int)time(NULL));
 	
 	//system("COLOR 6"); // changing the color of the screen.....
 	
@@ -341,7 +334,7 @@ MB:
 	printf("\n\n\tEnter Choice ");
 	putchar(175);
 	printf(" ");
-	choice = getch();
+	choice = ngetch();
 	
 	///If the user selects to buy drugs
 	if(choice == 49)//1)
@@ -417,7 +410,7 @@ B:		y = 0;// Clear back to 0
 		printf("\t\t\t  Money to spend:  $%d", stats.money);
 		printf("\n\nWhat do you want to buy?> ");
 					
-		z = getch(); //Used to test for characters instead if integers....
+		z = ngetch(); //Used to test for characters instead if integers....
 		
 		if(z == 49) // chocie 1
 		{ 
@@ -876,7 +869,7 @@ S:
 		
 		printf("What do you want to sell?> ");
 		//scanf("%d", &choice);
-		z = getch();
+		z = ngetch();
 
 		if(z == 49) // choice 1
 		{
@@ -1293,7 +1286,7 @@ S:
 			y = 0;
 			//Asking if user wants to play again...
 			printf("\n\nWant to play again? (y/n):> ");
-			y = getch();
+			y = ngetch();
 			if(y == 'y' || y == 'Y')//getch() == 'y' || getch() == 'Y')
 			{
 			//Setting all elements of the drug array to 0.....
@@ -1413,7 +1406,7 @@ J:
 		putchar(190);
 		printf("\n");
 		printf("\nEnter destination:> ");
-		y = getch(); 
+		y = ngetch(); 
 		putchar(y);
 				
 		drug[0] = rand()%10000;
@@ -1747,7 +1740,7 @@ BK:		//Setting variable back to 0.
 		//system("cls");
 		Bank(stats.money, stats.bank);//Starting to draw the Bank Menu
 		printf("Choose one:> ");
-		choice = getch();
+		choice = ngetch();
 		
 		//Start testing inout from user to see what they want to do
 		if(choice == 49)//1)
@@ -1811,7 +1804,7 @@ BB:
 		printf("\t\t\t  Current debt: $%d\n\n", stats.debt);
 		printf("\t\t\t  Money on you: $%d\n\n", stats.money);
 		printf("Choose one:> ");
-		choice = getch();
+		choice = ngetch();
 	
 		if(choice == 49)//choice == 1)
 		{
@@ -1983,7 +1976,7 @@ HA:
 		putchar(219);
 		printf("\n\n");
 		printf("\t\t\tCHOICE:> ");
-		choice = getch();
+		choice = ngetch();
 		
 		if(choice == 50)//choice == 2)//Trying to run from the cops
 		{	
@@ -2372,7 +2365,7 @@ HA:
 				goto HA;
 			}
 		}
-		if(choice != 49 || choice != 50)
+		if(choice != 49 && choice != 50)
 		{
 			printf("\n\nINVALID CHOICE!\n\n");
 			//system("PAUSE");
@@ -3075,7 +3068,7 @@ HA:
 	{
 		//system("cls");
 		printf("\t\t\nDo you want to purchase 100 more pockets for $1000.00? (y/n)> ");
-		y = getch();
+		y = ngetch();
 		if(y == 'y' || y == 'Y')//getch() == 'y' || getch() == 'Y')
 		{
 			putchar(y);
@@ -3765,4 +3758,9 @@ int Bookie()
 	printf("\n\n");
 
 	return 0;
+}
+
+int ngetch(void)
+{
+	return(getch());
 }
